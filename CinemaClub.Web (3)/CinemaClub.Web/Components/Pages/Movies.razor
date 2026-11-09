@@ -1,0 +1,38 @@
+﻿@page "/movies"
+@using Services
+@inject IMovieService imovieServices
+@using CinemaClub.Web.Models
+
+<h1>Фильмы</h1>
+
+@if (movies == null)
+{
+    <p>Загрузка...</p>
+}
+else if (movies.Count == 0)
+{
+    <p>Фильмы не найдены.</p>
+}
+else
+{
+    <ul>
+        @foreach (var movie in movies)
+        {
+            <li>
+                @movie.Title
+                @movie.Year
+            </li>
+        }
+    </ul>
+}
+
+
+@code {
+
+    public List<Movie> movies = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        movies = await imovieServices.GetMoviesAsync()   ;
+    }
+}
